@@ -1,0 +1,10 @@
+.form1{
+    margin: 5px;
+    padding: 20px;
+}
+#update{
+    float: left;
+}
+#cancel{
+    float: right;
+}
