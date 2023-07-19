@@ -1,15 +1,49 @@
-<form class="loginform">
+<!-- Template Driven Form -->
+
+<form #login="ngForm"(ngSubmit)="submit()">
+  <div class="mb-3">
+    <label for="email" class="form-label">User ID</label>
+    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" #email="ngModel"
+    [class.is-invalid]="email.invalid&&email.touched" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+    <small class="text-danger"*ngIf="email.invalid&&email.touched">Enter a valid UserID</small>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" class="form-control" id="password" name="password" [(ngModel)]="user.password" #password="ngModel"
+    [class.is-invalid]="password.invalid&&password.touched" required pattern="^[A-Za-z]{4,5}[0-9]{3}$">
+    <small class="text-danger"*ngIf="password.invalid&&password.touched">Enter a valid Password</small>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="login.form.invalid">Login</button>
+</form>
+
+
+
+
+
+
+
+
+
+<!-- Reactive Form -->
+
+<!-- <form class="loginform" [formGroup]="loginform">
     <div class="mb-3">
       <label for="email" class="form-label">Username</label>
-      <input type="email" class="form-control" id="email">
+      <input type="text" class="form-control" id="email" formControlName="email"
+      [ngClass]="{'is-invalid':loginform.controls['email'].errors&&(loginform.controls['email'].pristine||loginform.controls['email'].dirty||loginform.controls['email'].touched)}">
+      <span *ngIf="loginform.controls['email'].invalid||(loginform.controls['email'].touched)">
+        <span *ngIf="loginform.controls['email'].errors?.['required']">Field is required</span>
+        <span *ngIf="loginform.controls['email'].errors?.['pattern']">Invalid ID</span>
+      </span>
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password">
+      <input type="password" class="form-control" id="password" formControlName="password"
+      [ngClass]="{'is-invalid':loginform.controls['password'].errors&&(loginform.controls['password'].pristine||loginform.controls['password'].dirty||loginform.controls['password'].touched)}">
+      <span *ngIf="loginform.controls['password'].invalid||(loginform.controls['password'].touched)">
+        <span *ngIf="loginform.controls['password'].errors?.['required']">Field is required</span>
+        <span *ngIf="loginform.controls['password'].errors?.['pattern']">Invalid Password</span>
+      </span>
     </div>
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">remember username</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>
+    <button type="submit" class="btn btn-primary" [disabled]="loginform.invalid" routerLink="home">Login</button>
+  </form> -->

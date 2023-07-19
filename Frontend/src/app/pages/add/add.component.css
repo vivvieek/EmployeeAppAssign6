@@ -4,7 +4,9 @@
 }
 #save{
     float: left;
+    width: 78px;
 }
 #discard{
-    float: right;
+    margin-left: 25px;
+    width: 78px;
 }

@@ -5,8 +5,10 @@ import { LoginComponent } from './pages/login/login.component';
 import { AddComponent } from './pages/add/add.component';
 import { EditComponent } from './pages/edit/edit.component';
 import { ErrorComponent } from './pages/error/error.component';
+import { authGuard } from './auth.guard';
+import { ViewonlyComponent } from './pages/viewonly/viewonly.component';
 
-const routes: Routes = [{path:'login',component:LoginComponent},{path:'home',component:HomepageComponent},{path:'add',component:AddComponent},{path:'edit',component:EditComponent},{path:'**',component:ErrorComponent}];
+const routes: Routes = [{path:'',component:LoginComponent},{path:'view',canActivate:[authGuard] ,component:ViewonlyComponent},{path:'home',canActivate:[authGuard] ,component:HomepageComponent},{path:'add',canActivate:[authGuard],component:AddComponent},{path:'edit',canActivate:[authGuard],component:EditComponent},{path:'**',component:ErrorComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
