@@ -13,6 +13,6 @@ export class LoginservService {
   }
 
   loggedIn():boolean{
-    return !!localStorage.getItem('token')
+    return !!localStorage.getItem('token');
   }
 }

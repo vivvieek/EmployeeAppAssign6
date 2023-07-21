@@ -1,16 +1,16 @@
-<table class="table">
+<table class="table table-primary table-hover table-bordered">
     <thead>
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Name</th>
         <th scope="col">Email</th>
       </tr>
-    </thead>
+    </thead><br>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>mark@gmail.co.in</td>
+      <tr *ngFor="let employeed of employee">
+      <th scope="row">{{employeed.id}}</th>
+      <td>{{employeed.name}}</td>
+      <td>{{employeed.email}}</td>
       </tr>
     </tbody>
 </table>

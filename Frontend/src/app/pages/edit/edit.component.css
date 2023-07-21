@@ -4,7 +4,9 @@
 }
 #update{
     float: left;
+    width: 99px;
 }
 #cancel{
-    float: right;
+    margin-left: 25px;
+    width: 98px;
 }

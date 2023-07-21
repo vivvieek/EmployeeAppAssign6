@@ -1,5 +1,6 @@
 const express=require('express');
 const morgan=require('morgan');
+const mongoose=require('mongoose');
 const cors=require('cors');
 const jwt=require('jsonwebtoken');
 const app=new express();
@@ -9,6 +10,29 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+const url = 'mongodb+srv://spvivekbabu:fsda123@cluster0.h7vuisq.mongodb.net/';
+mongoose.connect(url,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(()=>{
+    console.log('Connected to MongoDB Atlas');
+})
+.catch((error)=>{
+    console.error('MongoDB Atlas connection error:',error);
+});
+
+// schema
+const employeedSchema = new mongoose.Schema({
+  id: Number,
+  name: String,
+  email: String,
+});
+
+// model
+const Employee = mongoose.model('Employeedetail', employeedSchema);
+
+// verify token
 function verifytoken(req,res,next){
   try {
     if(!req.headers.authorization) throw 'Unauthorized';
@@ -23,6 +47,7 @@ function verifytoken(req,res,next){
   }
 }
 
+// login verification
 app.post('/login',async(req,res)=>{
   try {
     console.log(req.body);
@@ -30,13 +55,13 @@ app.post('/login',async(req,res)=>{
     var pass=req.body.password;
     if((email=="admin@employee.com"&&pass=="admin123")){
       let payload={email:email,password:pass};
-      let token1=jwt.sign(payload,'secretkey');
-      res.status(200).send({message:'Success',token:token1});
+      let token=jwt.sign(payload,'secretkey');
+      res.status(200).send({message:'Success',token:token});
     }
     else if(email=="user@employee.com"&&pass=="user123"){
       let payload={email:email,password:pass};
-      let token2=jwt.sign(payload,'secretkey');
-      res.status(200).send({message:'Success',token:token2});
+      let token=jwt.sign(payload,'secretkey');
+      res.status(200).send({message:'Success',token:token});
     }
     else{
       res.status(404).send({message:'Unauthorised'});
@@ -47,14 +72,110 @@ app.post('/login',async(req,res)=>{
   }
 })
 
-app.post('/add',verifytoken,(req,res)=>{
-  console.log(req.headers.authorization);
-  res.status(200).send({message:'Success'});
+// app.post('/add',verifytoken,(req,res)=>{
+//   console.log(req.headers.authorization);
+//   res.status(200).send({message:'Success'});
+// })
 
-})
+// add data
+app.post('/add',(req,res)=>{
+  console.log(req.body);
+  const newEmployee = new Employee({
+    id:req.body.id,
+    name: req.body.name,
+    email: req.body.email
+  });
+  newEmployee.save()
+    .then(()=>{
+      res.status(200).json({message:'Employee saved successfully'});
+    })
+    .catch((error)=>{
+      res.status(500).json({error: 'Failed to save employee'});
+    });
+});
+
+// view data
+app.get('/employeelist',(req, res)=>{
+  Employee.find()
+  .then((employees)=>{
+    res.status(200).json(employees);
+  })
+  .catch((error)=>{
+    res.status(500).json({error:'Failed to fetch employees'});
+  });
+});
+
+// view single data
+app.get('/getone/:_id',(req,res)=>{
+  let data=Employee.findById(req.params._id)
+  .then((data)=>{
+    res.status(200).json({data});
+    res.json({data:data, status: 200}).status(200)
+  })
+  .catch((error)=>{
+    res.status(500).json({error:'Failed to fetch employees'});
+  });
+});
+
+// edit data
+app.put('/edititem/:_id', async(req,res)=>{
+  console.log(req.body);
+  const updateFields={
+    id:req.body.id,
+    name: req.body.name,
+    email: req.body.email
+  };
+  await Employee.findByIdAndUpdate(req.body.id, { $set: updateFields }, { new: true })
+    .then((employee)=>{
+      if (employee) {
+        res.status(200).json(employee);
+      } else {
+        res.status(404).json({ error: 'Employee not found' });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ error: 'Failed to update employee' });
+    });
+});
+
+// delete data
+app.delete('/deleteitem/:_id',(req, res) => {
+  Employee.findByIdAndRemove(req.params._id)
+  .then((employee)=>{
+    if (employee){
+      res.status(200).json({message:'Employee deleted successfully'});
+    }else{
+      res.status(404).json({error:'Employee not found'});
+    }
+  })
+  .catch((error)=>{
+    res.status(500).json({error:'Failed to delete employee'});
+  });
+});
 
 
 
+
+
+// edit data
+// app.put('/api/employees/:id', verifytoken, async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { name, age, place, salary } = req.body;
+//     const employee = await Employee.findById(id);
+//     if (!employee) {
+//       return res.status(404).json({ error: 'Employee not found' });
+//     }
+//     employee.name = name;
+//     employee.age = age;
+//     employee.place = place;
+//     employee.salary = salary;
+//     await employee.save();
+//     res.status(200).json({ message: 'Employee updated successfully' });
+//   } catch (error) {
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
 
 

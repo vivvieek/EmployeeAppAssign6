@@ -9,14 +9,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-
+  buttoncontrol=true;
   empdetail={
     id:'',
     name:'',
     email:''
   }
 
-  constructor(private serv:EmployeedataService){}
+  constructor(private serv:EmployeedataService, private router:Router){}
 
   ngOnInit(): void {
     
@@ -25,6 +25,7 @@ export class AddComponent implements OnInit {
   submit(){
     this.serv.addemployee(this.empdetail).subscribe((res=>{
       alert("Employee Added");
+      this.router.navigate(['home']);
     }))
   }
   
