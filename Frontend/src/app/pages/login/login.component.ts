@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit{
   }
   submit(){
     console.log(this.user);
-    if(this.user.email=="admin@employee.com"){
+    if(this.user.email=="admin@employee.com"&&this.user.password=="admin123"){
       this.loginserve.senddetails(this.user).subscribe((res=>{
         console.log(res);
         localStorage.setItem('token',res.token);
@@ -30,13 +30,16 @@ export class LoginComponent implements OnInit{
       }));
       alert('Welcome Admin');
     }
-    else if(this.user.email=="user@employee.com"){
+    else if(this.user.email=="user@employee.com"&&this.user.password=="user123"){
       this.loginserve.senddetails(this.user).subscribe((res=>{
         console.log(res);
         localStorage.setItem('token',res.token);
         this.router.navigate(['view']);
       }));
       alert('Welcome User');
+    }
+    else{
+      alert('Wrong UserID or Password !');
     }
 
   }
