@@ -17,12 +17,12 @@ export class EmployeedataService {
     return this.http.post<any>('http://localhost:3000/add',data);
   }
 
-  editItem(updatedData:any,_id:any){
-    return this.http.put(`http://localhost:3000/edititem/${_id}`,updatedData)
+  editItem(updatedData:any,id:any){
+    return this.http.put(`http://localhost:3000/edititem/${id}`,updatedData)
   }
 
-  getOneItem(_id:any){
-    return this.http.get(`http://localhost:3000/getone/${_id}`)
+  getOneItem(id:any){
+    return this.http.get(`http://localhost:3000/getone/${id}`)
   }
 
   delItem(_id:any){

@@ -19,9 +19,8 @@ export class HomepageComponent implements OnInit{
     }))
   }
 
-  editItem(_id:any){
-    this.route.navigate(['/edit/' +_id])
-    // this.route.navigate(['home'])
+  editItem(id:any){
+    this.route.navigate(['edititem/'+id])
     // alert('Data Updated')
   }
 

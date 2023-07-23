@@ -8,7 +8,7 @@ import { ErrorComponent } from './pages/error/error.component';
 import { authGuard } from './auth.guard';
 import { ViewonlyComponent } from './pages/viewonly/viewonly.component';
 
-const routes: Routes = [{path:'',component:LoginComponent},{path:'view',canActivate:[authGuard] ,component:ViewonlyComponent},{path:'home',canActivate:[authGuard] ,component:HomepageComponent},{path:'add',canActivate:[authGuard],component:AddComponent},{path:'edit',canActivate:[authGuard],component:EditComponent},{path:'**',component:ErrorComponent}];
+const routes: Routes = [{path:'',component:LoginComponent},{path:'view',canActivate:[authGuard] ,component:ViewonlyComponent},{path:'home',canActivate:[authGuard] ,component:HomepageComponent},{path:'add',canActivate:[authGuard],component:AddComponent},{path:'edititem/:id',canActivate:[authGuard],component:EditComponent},{path:'**',component:ErrorComponent}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

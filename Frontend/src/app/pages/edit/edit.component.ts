@@ -21,30 +21,29 @@ export class EditComponent {
       "email": new FormControl("")
     })
   }
-    item: any = {};
-    id: any
+  item: any;
+  id: any;
 
   ngOnInit(): void {
-    this.id = this.activatedRoute.snapshot.paramMap.get('_id')
-    this.api.getOneItem(this.id).subscribe((res: any) => {
-      this.item = res.data
+    this.id = this.activatedRoute.snapshot.paramMap.get('id')
+    this.api.getOneItem(this.id).subscribe((data) => {
+      this.item = data
       console.log(this.item)
-
       this.notesform = this.fb.group({
-        "id": res.data.id,
-        "name": res.data.name,
-        "email": res.data.email
+        "id": this.item.id,
+        "name": this.item.name,
+        "email": this.item.email
       })
 
     })
   
   }
-
   onSubmit() {
     console.log(this.notesform.value)
-    this.api.editItem(this.notesform.patchValue,this.id).subscribe(data=>{
+    this.api.editItem(this.notesform.value,this.id).subscribe(data=>{
       console.log(data)
       this.router.navigate(['home'])
+      alert("Detail Updated")
     })
   }
 

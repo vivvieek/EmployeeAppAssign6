@@ -17,7 +17,7 @@
       <th scope="row">{{employeed.id}}</th>
       <td>{{employeed.name}}</td>
       <td>{{employeed.email}}</td>
-      <td><a href="edit" (click)="editItem(employeed._id)"><i class="bi bi-pencil-square"></i></a></td>
+      <td><a (click)="editItem(employeed._id)"><i class="bi bi-pencil-square text-primary"></i></a></td>
       <td><a href="home" (click)="delItem(employeed._id)" ><i class="bi bi-trash3-fill"></i></a></td>
     </tr>
   </tbody>
