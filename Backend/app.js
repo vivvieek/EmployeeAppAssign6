@@ -105,39 +105,6 @@ app.get('/employeelist',(req, res)=>{
   });
 });
 
-// view single data
-app.get('/getone/:_id',(req,res)=>{
-  let data=Employee.findById(req.params._id)
-  .then((data)=>{
-    res.status(200).json({data});
-    res.json({data:data, status: 200}).status(200)
-  })
-  .catch((error)=>{
-    res.status(500).json({error:'Failed to fetch employees'});
-  });
-});
-
-// edit data
-app.put('/edititem/:_id', async(req,res)=>{
-  console.log(req.body);
-  const updateFields={
-    id:req.body.id,
-    name: req.body.name,
-    email: req.body.email
-  };
-  await Employee.findByIdAndUpdate(req.body.id, { $set: updateFields }, { new: true })
-    .then((employee)=>{
-      if (employee) {
-        res.status(200).json(employee);
-      } else {
-        res.status(404).json({ error: 'Employee not found' });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({ error: 'Failed to update employee' });
-    });
-});
-
 // delete data
 app.delete('/deleteitem/:_id',(req, res) => {
   Employee.findByIdAndRemove(req.params._id)
@@ -153,30 +120,58 @@ app.delete('/deleteitem/:_id',(req, res) => {
   });
 });
 
-
-
-
+// view single data
+// app.get('/getone/:_id',(req,res)=>{
+//   let data=Employee.findById(req.params._id)
+//   .then((data)=>{
+//     res.status(200).json({data});
+//     res.json({data:data, status: 200}).status(200)
+//   })
+//   .catch((error)=>{
+//     res.status(500).json({error:'Failed to fetch employees'});
+//   });
+// });
+app.get('/getone/:_id', (req, res) => {
+  try {
+      Employee.findById(req.params._id)
+      res.json({employee}).status(200)
+  } catch (error) {
+      console.log(error)
+      res.send('error')
+  }
+})
 
 // edit data
-// app.put('/api/employees/:id', verifytoken, async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { name, age, place, salary } = req.body;
-//     const employee = await Employee.findById(id);
-//     if (!employee) {
-//       return res.status(404).json({ error: 'Employee not found' });
-//     }
-//     employee.name = name;
-//     employee.age = age;
-//     employee.place = place;
-//     employee.salary = salary;
-//     await employee.save();
-//     res.status(200).json({ message: 'Employee updated successfully' });
-//   } catch (error) {
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
+// app.put('/edititem/:_id', async(req,res)=>{
+//   console.log(req.body);
+//   const updateFields={
+//     id:req.body.id,
+//     name: req.body.name,
+//     email: req.body.email
+//   };
+//   await Employee.findByIdAndUpdate(req.body.id, { $set: updateFields }, { new: true })
+//     .then((employee)=>{
+//       if (employee) {
+//         res.status(200).json(employee);
+//       } else {
+//         res.status(404).json({ error: 'Employee not found' });
+//       }
+//     })
+//     .catch((error) => {
+//       res.status(500).json({ error: 'Failed to update employee' });
+//     });
 // });
-
+app.put('/edititem/:_id', async (req, res) => {
+  try {
+      let id = req.params._id
+      let updateData = {$set: req.body}
+      const updated = await NOTES.findByIdAndUpdate(_id, updateData)
+      res.json(updated)
+  } catch (error) {
+      console.log(error)
+      res.send('error')
+  }
+})
 
 
 app.listen(3000,()=>{

@@ -1,16 +1,16 @@
 
-<form class="form1" #edit="ngForm" (ngSubmit)="onSubmit()">
+<form class="form1" [formGroup]="notesform" (ngSubmit)="onSubmit()">
     <div class="mb-3">
       <label for="ID" class="form-label">ID</label>
-      <input type="number" class="form-control" id="ID" placeholder="23" name="id" [(ngModel)]="empdetail.id">
+      <input type="number" class="form-control" id="ID" placeholder="23" formControlName="id">
     </div>
     <div class="mb-3">
       <label for="name" class="form-label">Name</label>
-      <input type="text" class="form-control" id="name" placeholder="Ronnie" name="name" [(ngModel)]="empdetail.name">
+      <input type="text" class="form-control" id="name" placeholder="Ronnie" formControlName="name">
     </div>
     <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" [(ngModel)]="empdetail.email">
+        <input type="email" class="form-control" id="email" placeholder="name@example.com" formControlName="email">
     </div>
     <div class="mb-3">
         <button type="submit" class="btn btn-warning" id="update"><i class="bi bi-cloud-upload"></i> Update</button>

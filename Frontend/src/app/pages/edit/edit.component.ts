@@ -10,44 +10,42 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent {
-  buttoncontrol=true;
-  empdetail={
-    id:'',
-    name:'',
-    email:''
-  }
+  // buttoncontrol=true;
+  notesform!:FormGroup
 
   constructor(private api: EmployeedataService, private activatedRoute: ActivatedRoute, private fb: FormBuilder, private router: Router) {
+    
+    this.notesform=new FormGroup({
+      "id": new FormControl(""),
+      "name": new FormControl(""),
+      "email": new FormControl("")
+    })
   }
-  item: any = {};
-  id: any
-
-
-
-
+    item: any = {};
+    id: any
 
   ngOnInit(): void {
-    // this.id = this.activatedRoute.snapshot.paramMap.get('id')
-    // this.api.getOneItem(this.id).subscribe((res: any) => {
-      // this.item = res.data
-    //   console.log(this.item)
+    this.id = this.activatedRoute.snapshot.paramMap.get('_id')
+    this.api.getOneItem(this.id).subscribe((res: any) => {
+      this.item = res.data
+      console.log(this.item)
 
-      // this.api.empdetail = this.fb.group({
-      //   "title": res.data.title,
-      //   "description": res.data.description
-      // })
+      this.notesform = this.fb.group({
+        "id": res.data.id,
+        "name": res.data.name,
+        "email": res.data.email
+      })
 
-    // })
+    })
+  
   }
 
-
-
-
   onSubmit() {
-    this.api.editItem(this.empdetail, this.id).subscribe(data => {
-        alert("Detail Updated")
-        this.router.navigate(['home'])
-      })
+    console.log(this.notesform.value)
+    this.api.editItem(this.notesform.patchValue,this.id).subscribe(data=>{
+      console.log(data)
+      this.router.navigate(['home'])
+    })
   }
 
 
